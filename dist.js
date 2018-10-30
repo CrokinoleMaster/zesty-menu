@@ -10,6 +10,7 @@ const {
     div
 } = require('ink');
 const Divider = require('ink-divider');
+const Spinner = require('ink-spinner');
 const fetch = require('node-fetch');
 const addDays = require('date-fns/add_days');
 const format = require('date-fns/format');
@@ -39,15 +40,27 @@ class WeekTable extends Component {
 
     componentWillMount() {
         const { zestyId } = this.props;
+        this.setState({
+            loading: true
+        });
         fetch(ZESTY_ENDPOINT + '?client_id=' + zestyId).then(res => res.json()).then(res => this.setState({
-            meals: res.meals
+            meals: res.meals,
+            loading: false
         }));
     }
 
     render() {
-        const { meals } = this.state;
+        const { meals, loading } = this.state;
         const currentDate = new Date();
         const mealsOfWeek = getMealsByDate(meals, currentDate, addDays(currentDate, 7));
+        if (loading) {
+            return h(
+                'div',
+                null,
+                h(Spinner, { green: true }),
+                ' Loading Meals'
+            );
+        }
         return h(
             Fragment,
             null,

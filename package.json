@@ -10,6 +10,7 @@
         "date-fns": "^1.29.0",
         "ink": "^0.5.1",
         "ink-divider": "^1.1.1",
+        "ink-spinner": "^2.0.0",
         "meow": "^5.0.0",
         "node-fetch": "^2.2.0"
     },
