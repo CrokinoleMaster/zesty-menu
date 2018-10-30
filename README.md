@@ -1,6 +1,8 @@
 # cli to view zesty menu
 
-###development
+<p align="center"><img src="/img/demo.gif?raw=true"/></p>
+
+### development
 
 -   `npm install` or `yarn install`
 
@@ -9,5 +11,3 @@
 -   `node dist.js` to run
 
 -   `npm build` or `yarn build` to build
-
-<p align="center"><img src="/img/demo.gif?raw=true"/></p>
