@@ -1,0 +1,28 @@
+{
+    "name": "lunch",
+    "version": "1.0.0",
+    "main": "dist.js",
+    "license": "MIT",
+    "scripts": {
+        "build": "babel index.js --out-file=dist.js"
+    },
+    "dependencies": {
+        "ink": "^0.5.1",
+        "meow": "^5.0.0"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-plugin-transform-react-jsx": "^6.24.1"
+    },
+    "babel": {
+        "plugins": [
+            [
+                "transform-react-jsx",
+                {
+                    "pragma": "h",
+                    "useBuiltIns": true
+                }
+            ]
+        ]
+    }
+}
