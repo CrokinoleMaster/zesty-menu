@@ -8,7 +8,8 @@
     },
     "dependencies": {
         "ink": "^0.5.1",
-        "meow": "^5.0.0"
+        "meow": "^5.0.0",
+        "node-fetch": "^2.2.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

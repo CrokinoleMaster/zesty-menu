@@ -1,15 +1,19 @@
-const zestyId = process.env.ZESTY_ID;
-import { h, render, Component, Color } from 'ink';
+const { h, render, Component, Color } = require('ink');
+const fetch = require('node-fetch');
+
+const ZESTY_ID = process.env.ZESTY_ID;
+const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api/meals';
 
 class WeekTable extends Component {
-    constructor() {
-        super();
-        this.state = {
-            i: 0
-        };
+    constructor(props) {
+        super(props);
+        this.state = {};
     }
 
-    componentWillMount() {}
+    componentWillMount() {
+        const { zestyId } = this.props;
+        fetch(ZESTY_ENDPOINT + '?client_id=' + zestyId).then(res => res.json()).then(console.log);
+    }
 
     render() {
         return h(
@@ -20,17 +24,9 @@ class WeekTable extends Component {
         );
     }
 
-    componentDidMount() {
-        this.timer = setInterval(() => {
-            this.setState({
-                i: this.state.i + 1
-            });
-        }, 100);
-    }
-
     componentWillUnmount() {
         clearInterval(this.timer);
     }
 }
 
-render(h(WeekTable, null));
+render(h(WeekTable, { zestyId: ZESTY_ID }));
