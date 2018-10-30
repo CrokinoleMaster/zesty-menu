@@ -1,6 +1,13 @@
-cli to view zesty menu
-=====================
+# cli to view zesty menu
 
-set `ZESTY_ID` in your environment to your zesty client id. then run `dist.js`
+###development
+
+-   `npm install` or `yarn install`
+
+-   set `ZESTY_ID` in your environment to your zesty client id
+
+-   `node dist.js` to run
+
+-   `npm build` or `yarn build` to build
 
 <p align="center"><img src="/img/demo.gif?raw=true"/></p>
