@@ -18,7 +18,14 @@ const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api/meals';
 const getMealsByDate = (meals, startDate, endDate) => meals.filter(meal => {
     const date = new Date(meal.delivery_date);
     return date >= startDate && date <= endDate;
-});
+}).reduce((acc, meal) => {
+    const date = new Date(meal.delivery_date);
+    if (!acc[format(date, 'YYYY-MM-DD')]) {
+        acc[format(date, 'YYYY-MM-DD')] = [];
+    }
+    acc[format(date, 'YYYY-MM-DD')].push(meal);
+    return acc;
+}, {});
 
 class WeekTable extends Component {
     constructor(props) {
@@ -42,7 +49,9 @@ class WeekTable extends Component {
         return h(
             Fragment,
             null,
-            mealsOfWeek.map(meal => {
+            Object.keys(mealsOfWeek).map(key => {
+                const mealsOfDay = mealsOfWeek[key];
+                const date = new Date(key);
                 return h(
                     Fragment,
                     null,
@@ -50,40 +59,41 @@ class WeekTable extends Component {
                         'div',
                         null,
                         h(
-                            Bold,
-                            null,
-                            format(meal.delivery_date, 'ddd')
+                            Color,
+                            { yellow: true },
+                            format(date, 'ddd'),
+                            ' '
                         ),
                         h(
                             'span',
                             null,
-                            format(meal.delivery_date, 'MMM DD, YYYY'),
-                            ' ',
-                            '|',
-                            ' '
-                        ),
-                        h(
-                            Color,
-                            { green: true },
-                            meal.restaurant_name
-                        ),
-                        h(
-                            Color,
-                            { blue: true },
-                            ' [',
-                            meal.restaurant_cuisine,
-                            ']'
+                            format(date, 'MMM DD, YYYY').padEnd(10),
+                            ' |'
                         )
                     ),
-                    h(
+                    mealsOfDay.map(m => h(
                         'div',
                         null,
                         h(
                             'span',
                             null,
-                            format(meal.delivery_date, 'h:ma')
+                            format(m.delivery_date, 'h:ma').padStart(15),
+                            ' | '
+                        ),
+                        h(
+                            Color,
+                            { green: true },
+                            m.restaurant_name
+                        ),
+                        h(
+                            Color,
+                            { blue: true },
+                            ' ',
+                            '[',
+                            m.restaurant_cuisine,
+                            ']'
                         )
-                    )
+                    ))
                 );
             })
         );

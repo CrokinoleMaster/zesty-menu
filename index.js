@@ -16,10 +16,19 @@ const ZESTY_ID = process.env.ZESTY_ID
 const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api/meals'
 
 const getMealsByDate = (meals, startDate, endDate) =>
-    meals.filter(meal => {
-        const date = new Date(meal.delivery_date)
-        return date >= startDate && date <= endDate
-    })
+    meals
+        .filter(meal => {
+            const date = new Date(meal.delivery_date)
+            return date >= startDate && date <= endDate
+        })
+        .reduce((acc, meal) => {
+            const date = new Date(meal.delivery_date)
+            if (!acc[format(date, 'YYYY-MM-DD')]) {
+                acc[format(date, 'YYYY-MM-DD')] = []
+            }
+            acc[format(date, 'YYYY-MM-DD')].push(meal)
+            return acc
+        }, {})
 
 class WeekTable extends Component {
     constructor(props) {
@@ -50,23 +59,33 @@ class WeekTable extends Component {
         )
         return (
             <Fragment>
-                {mealsOfWeek.map(meal => {
+                {Object.keys(mealsOfWeek).map(key => {
+                    const mealsOfDay = mealsOfWeek[key]
+                    const date = new Date(key)
                     return (
                         <Fragment>
                             <div>
-                                <Bold>{format(meal.delivery_date, 'ddd')}</Bold>
+                                <Color yellow>{format(date, 'ddd')} </Color>
                                 <span>
-                                    {format(meal.delivery_date, 'MMM DD, YYYY')}{' '}
-                                    |{' '}
-                                </span>
-                                <Color green>{meal.restaurant_name}</Color>
-                                <Color blue> [{meal.restaurant_cuisine}]</Color>
-                            </div>
-                            <div>
-                                <span>
-                                    {format(meal.delivery_date, 'h:ma')}
+                                    {format(date, 'MMM DD, YYYY').padEnd(10)} |
                                 </span>
                             </div>
+                            {mealsOfDay.map(m => (
+                                <div>
+                                    <span>
+                                        {format(
+                                            m.delivery_date,
+                                            'h:ma'
+                                        ).padStart(15)}
+                                        {' | '}
+                                    </span>
+                                    <Color green>{m.restaurant_name}</Color>
+                                    <Color blue>
+                                        {' '}
+                                        [{m.restaurant_cuisine}]
+                                    </Color>
+                                </div>
+                            ))}
                         </Fragment>
                     )
                 })}
