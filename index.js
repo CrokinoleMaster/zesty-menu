@@ -1,6 +1,7 @@
 const {
     h,
     render,
+    renderToString,
     Component,
     Color,
     Fragment,
@@ -8,6 +9,7 @@ const {
     span,
     div
 } = require('ink')
+const Divider = require('ink-divider')
 const fetch = require('node-fetch')
 const addDays = require('date-fns/add_days')
 const format = require('date-fns/format')
@@ -64,12 +66,19 @@ class WeekTable extends Component {
                     const date = new Date(key)
                     return (
                         <Fragment>
-                            <div>
-                                <Color yellow>{format(date, 'ddd')} </Color>
-                                <span>
-                                    {format(date, 'MMM DD, YYYY').padEnd(10)} |
-                                </span>
-                            </div>
+                            <Divider
+                                title={renderToString(
+                                    <Fragment>
+                                        <Color yellow>
+                                            {format(date, 'ddd')}{' '}
+                                        </Color>
+                                        <span>
+                                            {format(date, 'MMM DD, YYYY')}
+                                        </span>
+                                    </Fragment>
+                                )}
+                            />
+                            <br />
                             {mealsOfDay.map(m => (
                                 <div>
                                     <span>
@@ -86,6 +95,7 @@ class WeekTable extends Component {
                                     </Color>
                                 </div>
                             ))}
+                            <br />
                         </Fragment>
                     )
                 })}

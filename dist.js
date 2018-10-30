@@ -1,6 +1,7 @@
 const {
     h,
     render,
+    renderToString,
     Component,
     Color,
     Fragment,
@@ -8,6 +9,7 @@ const {
     span,
     div
 } = require('ink');
+const Divider = require('ink-divider');
 const fetch = require('node-fetch');
 const addDays = require('date-fns/add_days');
 const format = require('date-fns/format');
@@ -55,22 +57,24 @@ class WeekTable extends Component {
                 return h(
                     Fragment,
                     null,
-                    h(
-                        'div',
-                        null,
-                        h(
-                            Color,
-                            { yellow: true },
-                            format(date, 'ddd'),
-                            ' '
-                        ),
-                        h(
-                            'span',
+                    h(Divider, {
+                        title: renderToString(h(
+                            Fragment,
                             null,
-                            format(date, 'MMM DD, YYYY').padEnd(10),
-                            ' |'
-                        )
-                    ),
+                            h(
+                                Color,
+                                { yellow: true },
+                                format(date, 'ddd'),
+                                ' '
+                            ),
+                            h(
+                                'span',
+                                null,
+                                format(date, 'MMM DD, YYYY')
+                            )
+                        ))
+                    }),
+                    h('br', null),
                     mealsOfDay.map(m => h(
                         'div',
                         null,
@@ -93,7 +97,8 @@ class WeekTable extends Component {
                             m.restaurant_cuisine,
                             ']'
                         )
-                    ))
+                    )),
+                    h('br', null)
                 );
             })
         );
