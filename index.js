@@ -26,10 +26,10 @@ const getMealsByDate = (meals, startDate, endDate) =>
         })
         .reduce((acc, meal) => {
             const date = new Date(meal.delivery_date)
-            if (!acc[format(date, 'YYYY-MM-DD')]) {
-                acc[format(date, 'YYYY-MM-DD')] = []
+            if (!acc[format(date, 'YYYY/MM/DD')]) {
+                acc[format(date, 'YYYY/MM/DD')] = []
             }
-            acc[format(date, 'YYYY-MM-DD')].push(meal)
+            acc[format(date, 'YYYY/MM/DD')].push(meal)
             return acc
         }, {})
 
@@ -59,6 +59,7 @@ class WeekTable extends Component {
     render() {
         const { meals, loading } = this.state
         const currentDate = new Date()
+        currentDate.setHours(0, 0, 0, 0)
         const mealsOfWeek = getMealsByDate(
             meals,
             currentDate,
