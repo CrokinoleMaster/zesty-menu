@@ -1,10 +1,10 @@
 {
-    "name": "lunch",
+    "name": "zesty-menu",
     "version": "1.0.0",
-    "main": "dist.js",
+    "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "build": "babel index.js --out-file=dist.js"
+        "build": "babel src/index.js --out-file=index.js"
     },
     "dependencies": {
         "date-fns": "^1.29.0",
