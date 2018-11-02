@@ -80,21 +80,22 @@ class Controls extends Component {
     }
 
     handleKeyPress(_, key) {
-        const { onPrev, onNext } = this.props
-        if (key.name === 'left') {
+        const { onPrev, onNext, prevEnabled, nextEnabled } = this.props
+        if (key.name === 'left' && prevEnabled) {
             onPrev()
         }
-        if (key.name === 'right') {
+        if (key.name === 'right' && nextEnabled) {
             onNext()
         }
     }
 
     render() {
+        const { prevEnabled, nextEnabled } = this.props
         return (
             <div>
-                <Color green>{'<'.padEnd(6)}</Color>
+                <Color green={prevEnabled}>{'<'.padEnd(6)}</Color>
                 <span>'left' and 'right' to toggle through weeks</span>
-                <Color green>{'>'.padStart(6)}</Color>
+                <Color green={nextEnabled}>{'>'.padStart(6)}</Color>
             </div>
         )
     }
@@ -133,6 +134,9 @@ class WeekTable extends Component {
         monday.setDate(currentDate.getDate() - currentDate.getDay())
         sunday.setDate(currentDate.getDate() + (7 - currentDate.getDay()))
         const mealsOfWeek = getMealsByDate(meals, monday, sunday)
+        const weekKeys = Object.keys(mealsOfWeek)
+        const firstMealsOfWeek = mealsOfWeek[weekKeys[0]]
+        const lastMealsOfWeek = mealsOfWeek[weekKeys[weekKeys.length - 1]]
         if (loading) {
             return (
                 <div>
@@ -158,6 +162,15 @@ class WeekTable extends Component {
                 })}
                 <br />
                 <Controls
+                    prevEnabled={
+                        (firstMealsOfWeek && firstMealsOfWeek[0].id) !==
+                        (meals[0] && meals[0].id)
+                    }
+                    nextEnabled={
+                        (lastMealsOfWeek &&
+                            lastMealsOfWeek[lastMealsOfWeek.length - 1].id) !==
+                        (meals[meals.length - 1] && meals[meals.length - 1].id)
+                    }
                     onPrev={() =>
                         this.setState({
                             weekOffset: this.state.weekOffset - 1

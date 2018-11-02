@@ -96,22 +96,23 @@ class Controls extends Component {
     }
 
     handleKeyPress(_, key) {
-        const { onPrev, onNext } = this.props;
-        if (key.name === 'left') {
+        const { onPrev, onNext, prevEnabled, nextEnabled } = this.props;
+        if (key.name === 'left' && prevEnabled) {
             onPrev();
         }
-        if (key.name === 'right') {
+        if (key.name === 'right' && nextEnabled) {
             onNext();
         }
     }
 
     render() {
+        const { prevEnabled, nextEnabled } = this.props;
         return h(
             'div',
             null,
             h(
                 Color,
-                { green: true },
+                { green: prevEnabled },
                 '<'.padEnd(6)
             ),
             h(
@@ -121,7 +122,7 @@ class Controls extends Component {
             ),
             h(
                 Color,
-                { green: true },
+                { green: nextEnabled },
                 '>'.padStart(6)
             )
         );
@@ -157,6 +158,9 @@ class WeekTable extends Component {
         monday.setDate(currentDate.getDate() - currentDate.getDay());
         sunday.setDate(currentDate.getDate() + (7 - currentDate.getDay()));
         const mealsOfWeek = getMealsByDate(meals, monday, sunday);
+        const weekKeys = Object.keys(mealsOfWeek);
+        const firstMealsOfWeek = mealsOfWeek[weekKeys[0]];
+        const lastMealsOfWeek = mealsOfWeek[weekKeys[weekKeys.length - 1]];
         if (loading) {
             return h(
                 'div',
@@ -182,6 +186,8 @@ class WeekTable extends Component {
             }),
             h('br', null),
             h(Controls, {
+                prevEnabled: (firstMealsOfWeek && firstMealsOfWeek[0].id) !== (meals[0] && meals[0].id),
+                nextEnabled: (lastMealsOfWeek && lastMealsOfWeek[lastMealsOfWeek.length - 1].id) !== (meals[meals.length - 1] && meals[meals.length - 1].id),
                 onPrev: () => this.setState({
                     weekOffset: this.state.weekOffset - 1
                 }),
