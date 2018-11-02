@@ -9,6 +9,7 @@ const {
     span,
     div
 } = require('ink')
+const chalk = require('chalk')
 const Divider = require('ink-divider')
 const Spinner = require('ink-spinner')
 const fetch = require('node-fetch')
@@ -20,7 +21,9 @@ const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api/meals'
 
 if (!ZESTY_ID) {
     console.log(
-        'Please set environment variable "ZESTY_ID" as your Zesty client id first.'
+        chalk.yellow(
+            'Please set environment variable "ZESTY_ID" as your Zesty client id first.'
+        )
     )
     process.exit()
 }
@@ -130,6 +133,15 @@ class WeekTable extends Component {
                     loading: false
                 })
             )
+            .catch(err => {
+                console.log(
+                    chalk.bold.red(
+                        'Something went wrong with the request to Zesty, check the error below to debug'
+                    )
+                )
+                console.error(err)
+                process.exit()
+            })
     }
 
     render() {
