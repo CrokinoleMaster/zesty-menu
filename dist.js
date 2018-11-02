@@ -30,6 +30,57 @@ const getMealsByDate = (meals, startDate, endDate) => meals.filter(meal => {
     return acc;
 }, {});
 
+class DayHeader extends Component {
+    render() {
+        const { date } = this.props;
+        return h(Divider, {
+            title: renderToString(h(
+                Fragment,
+                null,
+                h(
+                    Color,
+                    { yellow: true },
+                    format(date, 'ddd'),
+                    ' '
+                ),
+                h(
+                    'span',
+                    null,
+                    format(date, 'MMM DD, YYYY')
+                )
+            ))
+        });
+    }
+}
+
+class MealView extends Component {
+    render() {
+        const { meal } = this.props;
+        return h(
+            'div',
+            null,
+            h(
+                'span',
+                null,
+                format(meal.delivery_date, 'h:ma').padStart(15),
+                ' | '
+            ),
+            h(
+                Color,
+                { green: true },
+                meal.restaurant_name
+            ),
+            h(
+                Color,
+                { blue: true },
+                ' [',
+                meal.restaurant_cuisine,
+                ']'
+            )
+        );
+    }
+}
+
 class WeekTable extends Component {
     constructor(props) {
         super(props);
@@ -75,47 +126,9 @@ class WeekTable extends Component {
                 return h(
                     Fragment,
                     null,
-                    h(Divider, {
-                        title: renderToString(h(
-                            Fragment,
-                            null,
-                            h(
-                                Color,
-                                { yellow: true },
-                                format(date, 'ddd'),
-                                ' '
-                            ),
-                            h(
-                                'span',
-                                null,
-                                format(date, 'MMM DD, YYYY')
-                            )
-                        ))
-                    }),
+                    h(DayHeader, { date: date }),
                     h('br', null),
-                    mealsOfDay.map(m => h(
-                        'div',
-                        null,
-                        h(
-                            'span',
-                            null,
-                            format(m.delivery_date, 'h:ma').padStart(15),
-                            ' | '
-                        ),
-                        h(
-                            Color,
-                            { green: true },
-                            m.restaurant_name
-                        ),
-                        h(
-                            Color,
-                            { blue: true },
-                            ' ',
-                            '[',
-                            m.restaurant_cuisine,
-                            ']'
-                        )
-                    )),
+                    mealsOfDay.map(m => h(MealView, { meal: m })),
                     h('br', null)
                 );
             })

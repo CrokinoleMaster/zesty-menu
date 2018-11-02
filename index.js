@@ -33,6 +33,38 @@ const getMealsByDate = (meals, startDate, endDate) =>
             return acc
         }, {})
 
+class DayHeader extends Component {
+    render() {
+        const { date } = this.props
+        return (
+            <Divider
+                title={renderToString(
+                    <Fragment>
+                        <Color yellow>{format(date, 'ddd')} </Color>
+                        <span>{format(date, 'MMM DD, YYYY')}</span>
+                    </Fragment>
+                )}
+            />
+        )
+    }
+}
+
+class MealView extends Component {
+    render() {
+        const { meal } = this.props
+        return (
+            <div>
+                <span>
+                    {format(meal.delivery_date, 'h:ma').padStart(15)}
+                    {' | '}
+                </span>
+                <Color green>{meal.restaurant_name}</Color>
+                <Color blue> [{meal.restaurant_cuisine}]</Color>
+            </div>
+        )
+    }
+}
+
 class WeekTable extends Component {
     constructor(props) {
         super(props)
@@ -79,34 +111,10 @@ class WeekTable extends Component {
                     const date = new Date(key)
                     return (
                         <Fragment>
-                            <Divider
-                                title={renderToString(
-                                    <Fragment>
-                                        <Color yellow>
-                                            {format(date, 'ddd')}{' '}
-                                        </Color>
-                                        <span>
-                                            {format(date, 'MMM DD, YYYY')}
-                                        </span>
-                                    </Fragment>
-                                )}
-                            />
+                            <DayHeader date={date} />
                             <br />
                             {mealsOfDay.map(m => (
-                                <div>
-                                    <span>
-                                        {format(
-                                            m.delivery_date,
-                                            'h:ma'
-                                        ).padStart(15)}
-                                        {' | '}
-                                    </span>
-                                    <Color green>{m.restaurant_name}</Color>
-                                    <Color blue>
-                                        {' '}
-                                        [{m.restaurant_cuisine}]
-                                    </Color>
-                                </div>
+                                <MealView meal={m} />
                             ))}
                             <br />
                         </Fragment>
