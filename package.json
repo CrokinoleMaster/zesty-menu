@@ -1,8 +1,14 @@
 {
     "name": "zesty-menu",
-    "version": "1.0.2",
-    "author": "Huarui Wu",
-    "main": "index.js",
+    "version": "1.0.3",
+    "author": {
+        "name": "Huarui Wu",
+        "email": "huarui.wu@gmail.com",
+        "url": "http://github.com/huaruiwu"
+    },
+    "bin": {
+        "zesty-menu": "index.js"
+    },
     "license": "MIT",
     "scripts": {
         "build": "babel src/index.js --out-file=index.js"

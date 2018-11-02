@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+
+
 const {
     h,
     render,
