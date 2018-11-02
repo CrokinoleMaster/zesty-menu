@@ -1,13 +1,17 @@
-# cli to view zesty menu
+# zesty-menu
 
 <p align="center"><img src="/img/demo.gif?raw=true"/></p>
 
-### development
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] Command Line for Zesty Menus
 
--   `npm install` or `yarn install`
+## Setup
 
--   set `ZESTY_ID` in your environment to your zesty client id
+You must set variable `ZESTY_ID` in your environment to your zesty client_id
 
--   `node dist.js` to run
+## Usage
 
--   `npm build` or `yarn build` to build
+There are no flags to use
+
+```bash
+> zesty-menu
+```
