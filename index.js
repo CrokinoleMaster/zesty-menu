@@ -65,11 +65,47 @@ class MealView extends Component {
     }
 }
 
+class Controls extends Component {
+    constructor(props) {
+        super(props)
+        this.handleKeyPress = this.handleKeyPress.bind(this)
+    }
+
+    componentDidMount() {
+        process.stdin.on('keypress', this.handleKeyPress)
+    }
+
+    componentWillUnmount() {
+        process.stdin.removeListener('keypress', this.handleKeyPress)
+    }
+
+    handleKeyPress(_, key) {
+        const { onPrev, onNext } = this.props
+        if (key.name === 'left') {
+            onPrev()
+        }
+        if (key.name === 'right') {
+            onNext()
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                <Color green>{'<'.padEnd(6)}</Color>
+                <span>'left' and 'right' to toggle through weeks</span>
+                <Color green>{'>'.padStart(6)}</Color>
+            </div>
+        )
+    }
+}
+
 class WeekTable extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            meals: []
+            meals: [],
+            weekOffset: 0
         }
     }
 
@@ -89,8 +125,8 @@ class WeekTable extends Component {
     }
 
     render() {
-        const { meals, loading } = this.state
-        const currentDate = new Date()
+        const { meals, loading, weekOffset } = this.state
+        const currentDate = addDays(new Date(), weekOffset * 7)
         currentDate.setHours(0, 0, 0, 0)
         const monday = new Date(currentDate)
         const sunday = new Date(currentDate)
@@ -120,6 +156,20 @@ class WeekTable extends Component {
                         </Fragment>
                     )
                 })}
+                <br />
+                <Controls
+                    onPrev={() =>
+                        this.setState({
+                            weekOffset: this.state.weekOffset - 1
+                        })
+                    }
+                    onNext={() =>
+                        this.setState({
+                            weekOffset: this.state.weekOffset + 1
+                        })
+                    }
+                />
+                <br />
             </Fragment>
         )
     }
