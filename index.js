@@ -60,11 +60,11 @@ class WeekTable extends Component {
         const { meals, loading } = this.state
         const currentDate = new Date()
         currentDate.setHours(0, 0, 0, 0)
-        const mealsOfWeek = getMealsByDate(
-            meals,
-            currentDate,
-            addDays(currentDate, 7)
-        )
+        const monday = new Date(currentDate)
+        const sunday = new Date(currentDate)
+        monday.setDate(currentDate.getDate() - currentDate.getDay())
+        sunday.setDate(currentDate.getDate() + (7 - currentDate.getDay()))
+        const mealsOfWeek = getMealsByDate(meals, monday, sunday)
         if (loading) {
             return (
                 <div>
