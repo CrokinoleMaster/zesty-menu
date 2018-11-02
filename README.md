@@ -4,6 +4,12 @@
 
 Command Line for Zesty Menus
 
+## Install
+
+```bash
+> npm install -g zesty-menu
+```
+
 ## Setup
 
 You must set variable `ZESTY_ID` in your environment to your zesty client_id
