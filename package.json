@@ -9,6 +9,9 @@
     "bin": {
         "zesty-menu": "index.js"
     },
+    "files": [
+        "index.js"
+    ],
     "license": "MIT",
     "scripts": {
         "build": "babel src/index.js --out-file=index.js"
