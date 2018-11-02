@@ -1,6 +1,7 @@
 {
     "name": "zesty-menu",
     "version": "1.0.0",
+    "author": "Huarui Wu",
     "main": "index.js",
     "license": "MIT",
     "scripts": {
@@ -28,5 +29,21 @@
                 }
             ]
         ]
-    }
+    },
+    "description": "cli tool to view zesty calendar",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/huaruiwu/zesty-menu.git"
+    },
+    "keywords": [
+        "zesty",
+        "calendar",
+        "menu",
+        "cli",
+        "lunch"
+    ],
+    "bugs": {
+        "url": "https://github.com/huaruiwu/zesty-menu/issues"
+    },
+    "homepage": "https://github.com/huaruiwu/zesty-menu#readme"
 }
