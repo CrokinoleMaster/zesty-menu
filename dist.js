@@ -18,6 +18,11 @@ const format = require('date-fns/format');
 const ZESTY_ID = process.env.ZESTY_ID;
 const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api/meals';
 
+if (!ZESTY_ID) {
+    console.log('Please set environment variable "ZESTY_ID" as your Zesty client id first.');
+    process.exit();
+}
+
 const getMealsByDate = (meals, startDate, endDate) => meals.filter(meal => {
     const date = new Date(meal.delivery_date);
     return date >= startDate && date <= endDate;
