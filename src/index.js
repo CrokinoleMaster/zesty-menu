@@ -67,7 +67,7 @@ class MealView extends Component {
         return (
             <div>
                 <span>
-                    {format(meal.delivery_date, 'h:ma').padStart(10)}
+                    {format(meal.delivery_date, 'h:mma').padStart(10)}
                     {' | '}
                 </span>
                 <Color green>{meal.restaurant_name}</Color>

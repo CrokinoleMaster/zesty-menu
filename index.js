@@ -71,7 +71,7 @@ class MealView extends Component {
             h(
                 'span',
                 null,
-                format(meal.delivery_date, 'h:ma').padStart(10),
+                format(meal.delivery_date, 'h:mma').padStart(10),
                 ' | '
             ),
             h(
