@@ -23,9 +23,14 @@ const format = require('date-fns/format')
 const ZESTY_ID = process.env.ZESTY_ID
 const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api'
 
+const YELLOW = '#FFFFA5'
+const GREEN = '#69FF94'
+const BLUE = '#D6ACFF'
+const RED = '#ffb3ba'
+
 if (!ZESTY_ID) {
     console.log(
-        chalk.yellow(
+        chalk.hex(YELLOW)(
             'Please set environment variable "ZESTY_ID" as your Zesty client id first.'
         )
     )
@@ -54,7 +59,7 @@ class DayHeader extends Component {
             <Divider
                 title={renderToString(
                     <Fragment>
-                        <Color yellow>{format(date, 'ddd')} </Color>
+                        <Color hex={YELLOW}>{format(date, 'ddd')} </Color>
                         <span>{format(date, 'MMM DD, YYYY')}</span>
                     </Fragment>
                 )}
@@ -72,8 +77,8 @@ class MealView extends Component {
                     {format(meal.delivery_date, 'h:mma').padStart(10)}
                     {' | '}
                 </span>
-                <Color green>{meal.restaurant_name}</Color>
-                <Color blue> [{meal.restaurant_cuisine}]</Color>
+                <Color hex={GREEN}>{meal.restaurant_name}</Color>
+                <Color hex={BLUE}> [{meal.restaurant_cuisine}]</Color>
             </div>
         )
     }
@@ -107,9 +112,9 @@ class Controls extends Component {
         const { prevEnabled, nextEnabled } = this.props
         return (
             <div>
-                <Color green={prevEnabled}>{'<'.padEnd(6)}</Color>
+                <Color hex={prevEnabled && GREEN}>{'<'.padEnd(6)}</Color>
                 <span>'left' and 'right' to toggle through weeks</span>
-                <Color green={nextEnabled}>{'>'.padStart(6)}</Color>
+                <Color hex={nextEnabled && GREEN}>{'>'.padStart(6)}</Color>
             </div>
         )
     }
@@ -155,7 +160,7 @@ class WeekTable extends Component {
             )
             .catch(err => {
                 console.log(
-                    chalk.bold.red(
+                    chalk.bold.hex(RED)(
                         'Something went wrong with the request to Zesty, check the error below to debug'
                     )
                 )
@@ -186,7 +191,7 @@ class WeekTable extends Component {
         return (
             <Fragment>
                 {clientInfo && (
-                    <Gradient name="retro">
+                    <Gradient name="pastel">
                         <BigText text={clientInfo.name} font="chrome" />
                     </Gradient>
                 )}

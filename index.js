@@ -24,8 +24,13 @@ const format = require('date-fns/format');
 const ZESTY_ID = process.env.ZESTY_ID;
 const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api';
 
+const YELLOW = '#FFFFA5';
+const GREEN = '#69FF94';
+const BLUE = '#D6ACFF';
+const RED = '#ffb3ba';
+
 if (!ZESTY_ID) {
-    console.log(chalk.yellow('Please set environment variable "ZESTY_ID" as your Zesty client id first.'));
+    console.log(chalk.hex(YELLOW)('Please set environment variable "ZESTY_ID" as your Zesty client id first.'));
     process.exit();
 }
 
@@ -50,7 +55,7 @@ class DayHeader extends Component {
                 null,
                 h(
                     Color,
-                    { yellow: true },
+                    { hex: YELLOW },
                     format(date, 'ddd'),
                     ' '
                 ),
@@ -78,12 +83,12 @@ class MealView extends Component {
             ),
             h(
                 Color,
-                { green: true },
+                { hex: GREEN },
                 meal.restaurant_name
             ),
             h(
                 Color,
-                { blue: true },
+                { hex: BLUE },
                 ' [',
                 meal.restaurant_cuisine,
                 ']'
@@ -123,7 +128,7 @@ class Controls extends Component {
             null,
             h(
                 Color,
-                { green: prevEnabled },
+                { hex: prevEnabled && GREEN },
                 '<'.padEnd(6)
             ),
             h(
@@ -133,7 +138,7 @@ class Controls extends Component {
             ),
             h(
                 Color,
-                { green: nextEnabled },
+                { hex: nextEnabled && GREEN },
                 '>'.padStart(6)
             )
         );
@@ -163,7 +168,7 @@ class WeekTable extends Component {
         Promise.all([fetchMeals, fetchClient]).then(() => this.setState({
             loading: false
         })).catch(err => {
-            console.log(chalk.bold.red('Something went wrong with the request to Zesty, check the error below to debug'));
+            console.log(chalk.bold.hex(RED)('Something went wrong with the request to Zesty, check the error below to debug'));
             console.error(err);
             process.exit();
         });
@@ -194,7 +199,7 @@ class WeekTable extends Component {
             null,
             clientInfo && h(
                 Gradient,
-                { name: 'retro' },
+                { name: 'pastel' },
                 h(BigText, { text: clientInfo.name, font: 'chrome' })
             ),
             Object.keys(mealsOfWeek).map(key => {
