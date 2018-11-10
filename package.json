@@ -1,6 +1,6 @@
 {
     "name": "zesty-menu",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "author": {
         "name": "Huarui Wu",
         "email": "huarui.wu@gmail.com",
@@ -19,7 +19,9 @@
     "dependencies": {
         "date-fns": "^1.29.0",
         "ink": "^0.5.1",
+        "ink-big-text": "^0.3.0",
         "ink-divider": "^1.1.1",
+        "ink-gradient": "^0.1.1",
         "ink-spinner": "^2.0.0",
         "meow": "^5.0.0",
         "node-fetch": "^2.2.0"

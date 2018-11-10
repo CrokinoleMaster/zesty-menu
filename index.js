@@ -13,6 +13,8 @@ const {
     div
 } = require('ink');
 const chalk = require('chalk');
+const Gradient = require('ink-gradient');
+const BigText = require('ink-big-text');
 const Divider = require('ink-divider');
 const Spinner = require('ink-spinner');
 const fetch = require('node-fetch');
@@ -20,7 +22,7 @@ const addDays = require('date-fns/add_days');
 const format = require('date-fns/format');
 
 const ZESTY_ID = process.env.ZESTY_ID;
-const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api/meals';
+const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api';
 
 if (!ZESTY_ID) {
     console.log(chalk.yellow('Please set environment variable "ZESTY_ID" as your Zesty client id first.'));
@@ -152,8 +154,13 @@ class WeekTable extends Component {
         this.setState({
             loading: true
         });
-        fetch(ZESTY_ENDPOINT + '?client_id=' + zestyId).then(res => res.json()).then(res => this.setState({
-            meals: res.meals,
+        const fetchMeals = fetch([ZESTY_ENDPOINT, 'meals'].join('/') + '?client_id=' + zestyId).then(res => res.json()).then(res => this.setState({
+            meals: res.meals
+        }));
+        const fetchClient = fetch([ZESTY_ENDPOINT, 'clients', zestyId].join('/')).then(res => res.json()).then(res => this.setState({
+            clientInfo: res.client
+        }));
+        Promise.all([fetchMeals, fetchClient]).then(() => this.setState({
             loading: false
         })).catch(err => {
             console.log(chalk.bold.red('Something went wrong with the request to Zesty, check the error below to debug'));
@@ -163,7 +170,7 @@ class WeekTable extends Component {
     }
 
     render() {
-        const { meals, loading, weekOffset } = this.state;
+        const { meals, clientInfo, loading, weekOffset } = this.state;
         const currentDate = addDays(new Date(), weekOffset * 7);
         currentDate.setHours(0, 0, 0, 0);
         const monday = new Date(currentDate);
@@ -185,6 +192,11 @@ class WeekTable extends Component {
         return h(
             Fragment,
             null,
+            clientInfo && h(
+                Gradient,
+                { name: 'retro' },
+                h(BigText, { text: clientInfo.name, font: 'chrome' })
+            ),
             Object.keys(mealsOfWeek).map(key => {
                 const mealsOfDay = mealsOfWeek[key];
                 const date = new Date(key);

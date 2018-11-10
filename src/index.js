@@ -12,6 +12,8 @@ const {
     div
 } = require('ink')
 const chalk = require('chalk')
+const Gradient = require('ink-gradient')
+const BigText = require('ink-big-text')
 const Divider = require('ink-divider')
 const Spinner = require('ink-spinner')
 const fetch = require('node-fetch')
@@ -19,7 +21,7 @@ const addDays = require('date-fns/add_days')
 const format = require('date-fns/format')
 
 const ZESTY_ID = process.env.ZESTY_ID
-const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api/meals'
+const ZESTY_ENDPOINT = 'https://api.zesty.com/client_portal_api'
 
 if (!ZESTY_ID) {
     console.log(
@@ -127,11 +129,27 @@ class WeekTable extends Component {
         this.setState({
             loading: true
         })
-        fetch(ZESTY_ENDPOINT + '?client_id=' + zestyId)
+        const fetchMeals = fetch(
+            [ZESTY_ENDPOINT, 'meals'].join('/') + '?client_id=' + zestyId
+        )
             .then(res => res.json())
             .then(res =>
                 this.setState({
-                    meals: res.meals,
+                    meals: res.meals
+                })
+            )
+        const fetchClient = fetch(
+            [ZESTY_ENDPOINT, 'clients', zestyId].join('/')
+        )
+            .then(res => res.json())
+            .then(res =>
+                this.setState({
+                    clientInfo: res.client
+                })
+            )
+        Promise.all([fetchMeals, fetchClient])
+            .then(() =>
+                this.setState({
                     loading: false
                 })
             )
@@ -147,7 +165,7 @@ class WeekTable extends Component {
     }
 
     render() {
-        const { meals, loading, weekOffset } = this.state
+        const { meals, clientInfo, loading, weekOffset } = this.state
         const currentDate = addDays(new Date(), weekOffset * 7)
         currentDate.setHours(0, 0, 0, 0)
         const monday = new Date(currentDate)
@@ -167,6 +185,11 @@ class WeekTable extends Component {
         }
         return (
             <Fragment>
+                {clientInfo && (
+                    <Gradient name="retro">
+                        <BigText text={clientInfo.name} font="chrome" />
+                    </Gradient>
+                )}
                 {Object.keys(mealsOfWeek).map(key => {
                     const mealsOfDay = mealsOfWeek[key]
                     const date = new Date(key)
